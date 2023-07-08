@@ -1,0 +1,38 @@
+#!/bin/bash 
+
+	echo "
+	###############################################################
+	#           ____          _    _                              #
+	#          |  _ \   /\   | |  | |   /\       /\               #
+	#          | |_) | /  \  | |__| |  /  \     /  \              #
+	#          |  _ < / /\ \ |  __  | / /\ \   / /\ \             #
+	#          | |_) / ____ \| |  | |/ ____ \ / ____ \            #
+	#          |____/_/    \_\_|  |_/_/    \_|_/    \_\           #
+	#                                                             #
+	# * Masscan Tools                                             #
+	# * By  : Bahaa Al-Najjar                                     #
+	# * url : https://github.com/bahaanajjar                      #
+	# * Usage : ./masGo                                           #
+	# * Free Script Plz Don't buy it || Enjoy ;)                  #
+	###############################################################
+
+	"
+echo "" 
+read -p "Enter the Range File Name : " input
+echo "" 
+echo "'port number like : 80 or 80,443 or 80-65535'"
+read -p "Enter the port number :" port
+echo "" 
+read -p "Enter the output File Name :" output 
+echo "" 
+echo "<<< lest go >>>" 
+
+sudo bin/masscan -iL $input --exclude 255.255.255.255 --rate 10000 -oG temp -p$port -sS -Pn -n --randomize-hosts -v --send-eth
+cat temp | awk '/open/{print $2 " " $5}'| sed -e "s/open//g"| sed -e "s/tcp//g" | sed 's:/.*::' | cut -d "/" -f1,2| sed "s/ /:/g" >>$output
+sleep 1 
+
+rm -rf temp
+echo "" 
+echo "Done => Thnx BAHAA :)"
+echo "" 
+
